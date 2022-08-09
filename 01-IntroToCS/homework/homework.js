@@ -10,7 +10,7 @@ function BinarioADecimal(num) {
     decimal = decimal + Math.pow(2,posicion) * num[i];
     posicion++;
   }
-  return decimal; 
+  return decimal;
 }
 
 function DecimalABinario(num) {
