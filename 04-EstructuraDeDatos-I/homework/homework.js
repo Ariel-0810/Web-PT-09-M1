@@ -15,10 +15,17 @@ Como ejercicio adicional y completamente opcional, al terminar de resolver este 
 */
 
 function nFactorial(n) {
-}
+  if(n > -1 && n < 2) return 1;  // CASO BASE O CASO DE CORTE
+  else if (n < 0) return 0;      // CASO BASE O CASO DE CORTE
+    return n * nFactorial(n-1);  // INVOCACION RECURSIVA CON DIFERENTES PARAMETROS
+};
 
 function nFibonacci(n) {
-}
+  if(n === 1) return 1;     // CASO BASE O CASO DE CORTE
+  else if (n <= 0) return 0; // CASO BASE O CASO DE CORTE
+  return nFibonacci(n-1) + nFibonacci(n-2) // INVOCACION RECURSIVA CON DIFERENTES PARAMETROS
+};
+
 
 /*
 Implementar la clase Queue, sabiendo que es una estructura de tipo FIFO, donde el primer elemento que ingresa es el primero que se quita. Definir los siguientes métodos:
@@ -30,7 +37,32 @@ Pueden utilizar class o función constructora.
 */
 
 function Queue() {
+  this.arr=[];
+}
+Queue.prototype.enqueue = function(data){
+    return this.arr.push(data);
+  }
 
+Queue.prototype.dequeue = function(data){
+  return this.arr.shift(data);
+};
+Queue.prototype.size = function(){
+  return this.arr.length;
+
+// class Queue {
+//   constructor(){
+//     this.arr=[];
+//   }
+// }
+// Queue.prototype.size = function(){
+//     return this.arr.length;  
+// }
+// Queue.prototype.enqueue = function(data){
+//       return this.arr.push(data);
+// }
+// Queue.prototype.dequeue = function(data){
+//   return this.arr.shift(data);
+// };
 }
 
 // No modifiquen nada debajo de esta linea
