@@ -1,5 +1,7 @@
 "use strict";
 
+const { createBrotliCompress } = require("zlib");
+
 /*
 Implementar la clase LinkedList, definiendo los siguientes métodos:
   - add: agrega un nuevo nodo al final de la lista;
@@ -10,10 +12,105 @@ Implementar la clase LinkedList, definiendo los siguientes métodos:
   search(isEven), donde isEven es una función que retorna true cuando recibe por parámetro un número par, busca un nodo cuyo valor sea un número par.
   En caso de que la búsqueda no arroje resultados, search debe retornar null.
 */
+class LinkedList{
+  constructor(){
+    this.head = null;
+  }
 
-function LinkedList() {}
+add(data){
+  let node = new Node(data);
+  let current = this.head;
+  if(!current) {
+    this.head = node;
+    return node;
+  }
+  // si hay nodos
+  // recorremos los nodos
+  while(current.next){
+    current = current.next;
+  }
+  current.next = node;
+  this._length++;
+  return node;
+}
+remove(){
+  //si la lista esta vacia
+  if(!this.head) return null;
+  // si la lista tiene 1 elemento
+  if(this.head && !this.head.next){
+    let rmNode = this.head;
+    this.head = null;
+    return rmNode.value;
+  }
+  //si la lista tiene muchos valores
+  let current = this.head;
+  while(current.next.next){
+    current = current.next;
+  }
+  let rmNode = current.next;
+  current.next = null;
+  return rmNode.value;
+};
+search(value){
+  if(!this.head) return null;
+  let current = this.head;
+  while(current){
+    if(current.value === value) return current.value;
+    else if(typeof value === 'function'){
+      if(value(current.value)) return current.value;
+    }
+    current = current.next;
+  }
+  return null;
+}
+};
 
-function Node(value) {}
+class Node{
+  constructor(data) {
+  this.value = data;
+  this.next = null;
+}
+}
+// function LinkedList() {
+//   this._length = 0;
+//     this.head = null;
+// };
+
+// function Node(value) {
+//   this.value = value;
+//   this.next = null;
+// }
+
+// LinkedList.prototype.add = function(value) {
+//   var node = new Node(value),
+//   current = this.head;
+//   // Si está vacia
+//   if (!current) {
+//       this.head = node;
+//       this._length++;
+//       return node;
+//   }
+  // Si no esta vacia, recorro hasta encontrar el último
+//   while (current.next) { //buscar la cola
+//       current = current.next;
+//   }
+//   current.next = node;
+//   this._length++;
+//   return node;
+// };
+
+
+// LinkedList.prototype.search = function(value){
+//   var node = new Node(value),
+//   current = this.head;
+//   while(current){
+//     if(current.data < value && current.next.data > value){
+//       var aux = current.next;
+//       current.next = node;
+//       node.next = aux;
+//     }
+//     current = current.next;
+//   }
 
 /*
 Implementar la clase HashTable.
@@ -30,7 +127,40 @@ La clase debe tener los siguientes métodos:
 Ejemplo: supongamos que quiero guardar {instructora: 'Ani'} en la tabla. Primero puedo chequear, con hasKey, si ya hay algo en la tabla con el nombre 'instructora'; luego, invocando set('instructora', 'Ani'), se almacenará el par clave-valor en un bucket específico (determinado al hashear la clave)
 */
 
-function HashTable() {}
+function HashTable() {
+  //arreglo de objetos
+  this.buckets = {};
+  this.numBuckets = 35;
+};
+
+HashTable.prototype.hash = function(key){ // 'String'
+  let sum = 0
+  for (let i = 0; i < key.length; i++){
+    sum = sum + key.charCodeAt(i) //o sum += key.charCodeAt(i)
+  }
+  return sum % this.numBuckets; // ejemplo 80%35 = 10. Entonces lo guarda en la posicion 10
+};
+
+HashTable.prototype.set = function(key, value){
+  //revisa que sea un string
+  if(typeof key !== 'string') throw new TypeError('Keys must be strings');
+  let posArr = this.hash(key);
+  // si la posicion en el arreglo esta vacia, crea un obj
+  if(this.buckets[posArr] === undefined){
+    this.buckets[posArr] = {};
+  }
+  this.buckets[posArr][key] = value; 
+};
+
+HashTable.prototype.get = function(key){
+  let posArr = this.hash(key);
+  return this.buckets[posArr][key];
+};
+
+HashTable.prototype.hasKey = function(key){
+  let posArr = this.hash(key);
+  return this.buckets[posArr].hasOwnProperty(key);
+};
 
 // No modifiquen nada debajo de esta linea
 // --------------------------------
