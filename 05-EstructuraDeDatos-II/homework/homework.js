@@ -14,7 +14,7 @@ Implementar la clase LinkedList, definiendo los siguientes métodos:
 */
 class LinkedList{
   constructor(){
-    this.head = null;
+    this.head = null;    
   }
 
 add(data){
